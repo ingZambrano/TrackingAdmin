@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web">
+
+    <resultMap id="usrResult" type="mx.com.avior.dto.DTOUsuario">
+        <result property="idCode" column="CODIGO" jdbcType="NUMERIC"/>
+        <result property="descCode" column="FCCODIGO" jdbcType="CHAR"/>
+        <result property="idUsuario" column="FIDUSUARIO" jdbcType="NUMERIC"/>
+    </resultMap>
+    
+    <select id="validaUsuario" statementType="CALLABLE">
+        { call RSvalidaUsuario(
+        #{pi_correo, jdbcType=VARCHAR, mode=IN},
+        #{pi_password, jdbcType=VARCHAR, mode=IN},
+        #{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+    	#{po_idUsuario,  jdbcType=NUMERIC, javaType=int, mode=OUT},
+    	#{po_status, jdbcType=NUMERIC, javaType=int, mode=OUT},
+		#{po_nombrePerfil,  jdbcType=VARCHAR, javaType=String, mode=OUT},
+		#{err_num,  jdbcType=NUMERIC, javaType=int, mode=OUT},
+		#{err_msg,  jdbcType=VARCHAR, javaType=String, mode=OUT}
+        ) }
+    </select>
+    
+        <select id="RSvalidaUsuarioByName" statementType="CALLABLE">
+        { call RSvalidaUsuarioByName(
+        #{pi_correo, jdbcType=VARCHAR, mode=IN},
+    	#{po_idUsuario,  jdbcType=NUMERIC, javaType=int, mode=OUT},
+    	#{pass,  jdbcType=VARCHAR, javaType=String, mode=OUT},
+    	#{po_status, jdbcType=NUMERIC, javaType=int, mode=OUT},
+		#{po_nombrePerfil,  jdbcType=VARCHAR, javaType=String, mode=OUT},
+		#{idPerfil,  jdbcType=NUMERIC, javaType=int, mode=OUT},
+		#{err_num,  jdbcType=NUMERIC, javaType=int, mode=OUT},
+		#{err_msg,  jdbcType=VARCHAR, javaType=String, mode=OUT}
+        ) }
+    </select>
+    
+    
+    <!--  Actualizacion del catalogo de ciudades -->
+	<select id="RUcatCiudades" statementType="CALLABLE">
+        { call RUcatCiudades(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idPais, jdbcType=INTEGER, mode=IN},
+			#{pi_idEstado, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de dispositivos -->
+<!-- 	<select id="RUcatDispositivos" statementType="CALLABLE"> -->
+<!--         { call RUcatDispositivos( -->
+<!--             #{pi_numeroSerie, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_descripcion, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_fechaFabricacion, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_contrato, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_idStatus, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN}, -->
+<!--             #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT}, -->
+<!--             #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT} -->
+<!-- 		) } -->
+<!--     </select> -->
+    
+	<!--  Actualizacion del catalogo de estados -->
+	<select id="RUcatEstados" statementType="CALLABLE">
+        { call RUcatEstados(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idPais, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de marcas de autos -->
+	<select id="RUcatMarcaAuto" statementType="CALLABLE">
+        { call RUcatMarcaAuto(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de menus -->
+	<select id="RUcatMenus" statementType="CALLABLE">
+        { call RUcatMenus(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_imagen, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de relacion entre el menu y submenus -->
+	<select id="RUcatMenuSubmenu" statementType="CALLABLE">
+        { call RUcatMenuSubmenu(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_idMenu, jdbcType=INTEGER, mode=IN},
+			#{pi_idSubmenu, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de modelos de autos -->
+	<select id="RUcatModeloAuto" statementType="CALLABLE">
+        { call RUcatModeloAuto(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idMarca, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de paises -->
+	<select id="RUcatPaises" statementType="CALLABLE">
+        { call RUcatPaises(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de perfiles -->
+	<select id="RUcatPerfiles" statementType="CALLABLE">
+        { call RUcatPerfiles(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_descripcion, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de relacion entre perfiles y menus -->
+	<select id="RUcatPerfilMenu" statementType="CALLABLE">
+        { call RUcatPerfilMenu(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_idPerfil, jdbcType=INTEGER, mode=IN},
+			#{pi_idMenu, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de status de usuarios -->
+	<select id="RUcatStatusUsuarios" statementType="CALLABLE">
+        { call RUcatStatusUsuarios(
+            #{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_descripcion, jdbcType=VARCHAR, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de submenus -->
+	<select id="RUcatSubmenus" statementType="CALLABLE">
+        { call RUcatSubmenus(
+            #{pi_id, jdbcType=INTEGER, mode=IN},
+			#{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+	
+	<!--  Actualizacion del catalogo de compañias telefonicas -->
+<!-- 	<select id="RUcatTelefonicas" statementType="CALLABLE"> -->
+<!--         { call RUcatTelefonicas( -->
+<!--             #{pi_id, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_nombre, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_descripcion, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_idStatus, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN}, -->
+<!--             #{err_num, jdbcType=INTEGER, javaType=int, mode=OUT}, -->
+<!--             #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT} -->
+<!-- 		) } -->
+<!--     </select> -->
+	
+		<!--  Registro de usuarios -->
+	<select id="RIclientes" statementType="CALLABLE">
+        { call RIclientes(
+            #{pi_correo, jdbcType=VARCHAR, mode=IN},
+			#{pi_password, jdbcType=VARCHAR, mode=IN},
+			#{pi_idPais, jdbcType=INTEGER, mode=IN},
+			#{pi_idEstado, jdbcType=INTEGER, mode=IN},
+			#{pi_idCiudad, jdbcType=INTEGER, mode=IN},
+			#{pi_telefono, jdbcType=VARCHAR, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+	
+		) }
+    </select>
+    
+    		<!--  Registro de dispositivos -->
+	<select id="RUcatDispositivos" statementType="CALLABLE">
+        { call RUcatDispositivos(
+            #{pi_numeroSerie, jdbcType=VARCHAR, mode=IN},
+			#{pi_descripcion, jdbcType=VARCHAR, mode=IN},
+			#{pi_fechaFabricacion, jdbcType=VARCHAR, mode=IN},
+			#{pi_contrato, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+    
+    
+        		<!--  Registro de dispositivos -->
+<!-- 	<select id="RUresponsableDisp" statementType="CALLABLE"> -->
+<!--         { call RUresponsableDisp( -->
+<!--         	#{pi_id, jdbcType=VARCHAR, mode=IN}, -->
+<!--             #{pi_idResponsable, jdbcType=VARCHAR, mode=IN}, -->
+<!-- 			#{pi_numeroSerie, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_marca, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_modelo, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_idUsuario, jdbcType=INTEGER, mode=IN}, -->
+<!-- 			#{pi_idStatus, jdbcType=DATE, mode=IN}, -->
+<!-- 			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN}, -->
+<!--             #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT}, -->
+<!--             #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT} -->
+<!-- 		) } -->
+<!--     </select> -->
+    <!-- REGISTRO DE DISPOSITIVOS NUEVO -->
+    <select id="RUusuarioDisp" statementType="CALLABLE">
+        { call RUusuarioDisp(
+        	#{pi_id, jdbcType=INTEGER, mode=IN},
+        	#{pi_idUsuario, jdbcType=INTEGER, mode=IN},
+            #{pi_numeroSerie, jdbcType=VARCHAR, mode=IN},
+			#{pi_aliasDisp, jdbcType=VARCHAR, mode=IN},
+			#{pi_tiempoActualizacion, jdbcType=INTEGER, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_serieChip, jdbcType=VARCHAR, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+    
+    
+    <select id="RUcatChips" statementType="CALLABLE">
+        { call RUcatChips(
+        	#{pi_numeroSerie, jdbcType=VARCHAR, mode=IN},
+            #{pi_descripcion, jdbcType=VARCHAR, mode=IN},
+			#{pi_idTelefonica, jdbcType=INTEGER, mode=IN},
+			#{pi_fechaFabricacion, jdbcType=INTEGER, mode=IN},
+			#{pi_fechaRegistro, jdbcType=INTEGER, mode=IN},
+			#{pi_numeroTelefonico, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+    
+    <select id="RUcatTelefonicas" statementType="CALLABLE">
+        { call RUcatTelefonicas(
+        	#{pi_id, jdbcType=INTEGER, mode=IN},
+            #{pi_nombre, jdbcType=VARCHAR, mode=IN},
+			#{pi_descripcion, jdbcType=VARCHAR, mode=IN},
+			#{pi_idStatus, jdbcType=INTEGER, mode=IN},
+			#{pi_usuarioModifico, jdbcType=VARCHAR, mode=IN},
+            #{err_num, jdbcType=INTEGER, javaType=INTEGER, mode=OUT},
+            #{err_msg, jdbcType=VARCHAR, javaType=String, mode=OUT}
+		) }
+    </select>
+    
+    <!--  Lista de chips --> 
+ 	<resultMap id="chipsResult" type="mx.com.avior.dto.DTOChip"> 
+         <result property="fiIdChip" column="fiIdChip" jdbcType="INTEGER"/> 
+         <result property="fcNumeroSerie" column="fcNumeroSerie" jdbcType="VARCHAR"/> 
+         <result property="fcDescripcion" column="fcDescripcion" jdbcType="VARCHAR"/>
+         
+         <result property="fiIdTelefonica" column="fiIdTelefonica" jdbcType="INTEGER"/> 
+ 		  
+         <result property="fcNombre" column="fcNombre" jdbcType="VARCHAR"/> 
+ 		 <result property="fdfechaFabricacion" column="fdfechaFabricacion" jdbcType="VARCHAR"/> 
+ 		 <result property="fdFechaRegistro" column="fdFechaRegistro" jdbcType="VARCHAR"/> 
+ 		 
+ 		 <result property="pi_numeroTelefonico" column="fcNumeroTelefonico" jdbcType="VARCHAR"/> 
+ 		
+ 		 <result property="fiIdStatus" column="fiIdStatus" jdbcType="INTEGER"/>
+ 		 
+         <result property="idCode" column="codigoOK" jdbcType="INTEGER"/> 
+         <result property="descCode" column="msgOK" jdbcType="VARCHAR"/> 
+     </resultMap> 
+    
+    <select id="RScatChips" resultMap="chipsResult" statementType="CALLABLE">
+        { call RScatChips }
+    </select>
+    
+    <!--  Lista de ciudades RScatCiudades --> 
+ 	<resultMap id="telefonicasResult" type="mx.com.avior.dto.DTOTelefonica"> 
+         <result property="fiId" column="fiId" jdbcType="INTEGER"/> 
+         <result property="fcNombre" column="fcNombre" jdbcType="VARCHAR"/> 
+         <result property="fcDescripcion" column="fcDescripcion" jdbcType="VARCHAR"/>
+ 		 <result property="fiIdStatus" column="fiIdStatus" jdbcType="INTEGER"/>
+ 		 
+         <result property="idCode" column="codigoOK" jdbcType="INTEGER"/> 
+         <result property="descCode" column="msgOK" jdbcType="VARCHAR"/> 
+     </resultMap>
+    
+    <select id="RScatTelefinicas" resultMap="telefonicasResult" statementType="CALLABLE">
+        { call RScatTelefonicas }
+    </select>
+   
+
+<!--Lista de dispositivos RScatDispositivos -->
+ 	<resultMap id="dispositivosResult" type="mx.com.avior.dto.DTODispositivo"> 
+         <result property="fiIdDispositivo" column="fiIdDispositivo" jdbcType="INTEGER"/> 
+         <result property="pi_numeroSerie" column="fcNumeroserie" jdbcType="VARCHAR"/> 
+         <result property="pi_descripcion" column="fcDescripcion" jdbcType="VARCHAR"/> 
+ 		<result property="pi_fechaFabricacion" column="fdfechaFabricacion" jdbcType="VARCHAR"/> 
+         <result property="pi_contrato" column="fcContrato" jdbcType="VARCHAR"/> 
+         <result property="pi_idStatus" column="fiIdStatus" jdbcType="INTEGER"/> 
+         <result property="idCode" column="codigoOK" jdbcType="INTEGER"/> 
+         <result property="descCode" column="msgOK" jdbcType="VARCHAR"/> 
+     </resultMap> 
+     
+     <select id="RScatDispositivos" resultMap="dispositivosResult" statementType="CALLABLE">
+        { call RScatDispositivos }
+    </select>
+     
+	<!--  Lista de ciudades RScatCiudades --> 
+ 	<resultMap id="ciudadesResult" type="mx.com.avior.dto.DTOCiudades"> 
+         <result property="fiId" column="fiId" jdbcType="INTEGER"/> 
+         <result property="ciudad" column="ciudad" jdbcType="VARCHAR"/> 
+         <result property="fiIdStatus" column="fiIdStatus" jdbcType="INTEGER"/> 
+ 		 <result property="idPais" column="idPais" jdbcType="INTEGER"/> 
+         <result property="pais" column="pais" jdbcType="VARCHAR"/> 
+         <result property="idEstado" column="idEstado" jdbcType="INTEGER"/> 
+ 		 <result property="estado" column="estado" jdbcType="VARCHAR"/> 
+         <result property="idCode" column="codigoOK" jdbcType="INTEGER"/> 
+         <result property="desCode" column="msgOK" jdbcType="VARCHAR"/> 
+     </resultMap> 
+	
+	<select id="RScatCiudades" resultMap="ciudadesResult" statementType="CALLABLE">
+        { call RScatCiudades(
+        #{in_idEstado, jdbcType=INTEGER, mode=IN}
+        ) }
+    </select>
+	
+<!-- 	  Lista de estados  RScatEstados --> 
+	<resultMap id="estadosResult" type="mx.com.avior.dto.DTOEstado">
+        <result property="pi_id" column="fiId" jdbcType="INTEGER"/>
+        <result property="pi_nombre" column="estado" jdbcType="VARCHAR"/>
+        <result property="pi_idStatus" column="fiIdStatus" jdbcType="BOOLEAN"/>
+		<result property="pi_idPais" column="idPais" jdbcType="INTEGER"/>
+        <result property="pais" column="pais" jdbcType="VARCHAR"/>
+        <result property="idCode" column="codigoOK" jdbcType="INTEGER"/>
+        <result property="descCode" column="msgOK" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="RScatEstados" resultMap="estadosResult" statementType="CALLABLE">
+        { call RScatEstados(
+        #{in_idPais, jdbcType=INTEGER, mode=IN}
+        ) }
+    </select>
+
+	<!--  Lista de Clientes -->
+ 	<resultMap id="clientesResult" type="mx.com.avior.dto.DTOCliente"> 
+         <result property="id_Cliente" column="fiIdUsuario" jdbcType="INTEGER"/> 
+         <result property="pi_correo" column="fcCorreoUsuario" jdbcType="VARCHAR"/> 
+         <result property="idPais" column="fiPais" jdbcType="INTEGER"/>
+         <result property="pi_idEstado" column="fiEstado" jdbcType="INTEGER"/> 
+         <result property="pi_idCiudad" column="fiCiudad" jdbcType="INTEGER"/>
+         <result property="telefono" column="fcTelefono" jdbcType="VARCHAR"/>
+         
+         <result property="pi_idStatus" column="fiIdStatus" jdbcType="INTEGER"/>
+         <result property="idCode" column="codigoOK" jdbcType="INTEGER"/> 
+         <result property="descCode" column="msgOK" jdbcType="VARCHAR"/> 
+     </resultMap>
+     
+     	<select id="RScatUsuarios" resultMap="clientesResult" statementType="CALLABLE">
+       	 { call RScatUsuarios}
+    	</select>
+    	
+	<!--  Lista de marcas -->
+<!-- 	<resultMap id="marcasResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fcNombre" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+	<!--  Lista de menus -->
+<!-- 	<resultMap id="menusResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fcNombre" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fcImagen" jdbcType="VARCHAR"/> -->
+<!-- 		<result property="???" column="fiIdstatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+	<!--  Lista de relaciones entre menus y submenus -->
+<!-- 	<resultMap id="menuSubmenuResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="idMenu" jdbcType="INTEGER"/> -->
+<!-- 		<result property="???" column="menu" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="idSubmenu" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="submenu" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+	<!--  Lista de modelos de autos -->
+<!-- 	<resultMap id="modelosResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="modelo" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!-- 		<result property="???" column="fiIdMarca" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="marca" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+<!-- 	 Lista de paises --> 
+	<resultMap id="paisesResult" type="mx.com.avior.dto.DTOPais">
+	<result property="pi_id" column="fiId" jdbcType="INTEGER"/>
+	<result property="pi_nombre" column="fcNombre" jdbcType="VARCHAR"/>
+	<result property="pi_idStatus" column="fiIdStatus" jdbcType="BOOLEAN"/>
+	<result property="idCode" column="codigoOK" jdbcType="INTEGER"/>
+	<result property="descCode" column="msgOK" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="RScatPaises" resultMap="paisesResult" statementType="CALLABLE">
+        { call RScatPaises }
+    </select>
+	
+	<!--  Lista de perfiles -->
+<!-- 	<resultMap id="perfilesResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fcNombre" jdbcType="VARCHAR"/> -->
+<!-- 		<result property="???" column="fcDescripcion" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+	<!--  Lista de relacion entre perfiles y menus -->
+<!-- 	<resultMap id="perfilMenusResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!-- 		<result property="???" column="idPerfil" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="perfil" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="idMenu" jdbcType="INTEGER"/> -->
+<!-- 		<result property="???" column="menu" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+
+	
+	<!--  Lista de submenus -->
+<!-- 	<resultMap id="submenusResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fcNombre" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+	
+	<!--  Lista de compañias telefonicas -->
+<!-- 	<resultMap id="telefonicasResult" type="mx.com.avior.dto.???"> -->
+<!--         <result property="???" column="fiId" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="fcNombre" jdbcType="VARCHAR"/> -->
+<!--         <result property="???" column="fcDescripcion" jdbcType="VARCHAR"/> -->
+<!-- 		<result property="???" column="fiIdStatus" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="codigoOK" jdbcType="INTEGER"/> -->
+<!--         <result property="???" column="msgOK" jdbcType="VARCHAR"/> -->
+<!--     </resultMap> -->
+    
+</mapper>

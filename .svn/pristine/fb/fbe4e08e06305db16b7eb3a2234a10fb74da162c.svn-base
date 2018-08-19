@@ -1,0 +1,64 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+ 	http://www.springframework.org/schema/context 
+ 	http://www.springframework.org/schema/context/spring-context-4.1.xsd 
+ 	http://www.springframework.org/schema/tx 
+ 	http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	
+	<context:component-scan base-package="mx.com.avior.security" />
+	
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" -->
+<!-- 	 	p:driverClassName="oracle.jdbc.driver.OracleDriver" -->
+<!-- 	 	p:url="jdbc:oracle:thin:@10.63.32.161:1521:POCBDDES" -->
+<!-- 	 	p:username="USRCBPUNTO" -->
+<!-- 	 	p:password="uskcbPun70" -->
+<!-- 	 /> -->
+
+<!-- 	<bean id="dataSource" class="com.baz.casabolsa.dbacces.DynamicDataSource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="${jdbc.driverClassName}"/> -->
+<!--     	<property name="url" value="${jdbc.url}"/> -->
+<!--     	<property name="username" value="${jdbc.username}"/> -->
+<!--     	<property name="password" value="${jdbc.password}"/> -->
+<!-- 	</bean> -->
+
+<!-- <context:property-placeholder location="file:\${properties.path}/config/bd.properties" /> -->
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    	<property name="url" value="jdbc:mysql://localhost:3306/trackerBD"/>
+    	<property name="username" value="root"/>
+    	<property name="password" value="Aero1234"/>
+	</bean>
+
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> -->
+<!--     	<property name="url" value="jdbc:mysql://192.168.0.7:3306/trackerBD"/> -->
+<!--     	<property name="username" value="root"/> -->
+<!--     	<property name="password" value="lebrucita"/> -->
+<!-- 	</bean> -->
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:mx/com/avior/mybatis/mapper/*.xml" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="mx.com.avior.mybatis.mapper" />
+	</bean>
+
+   	
+</beans>
